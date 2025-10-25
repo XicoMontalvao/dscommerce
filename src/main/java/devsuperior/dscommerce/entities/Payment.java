@@ -3,6 +3,7 @@ package devsuperior.dscommerce.entities;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_payment")
@@ -46,5 +47,19 @@ public class Payment {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof Payment payment)) return false;
+
+        return Objects.equals(getId(), payment.getId()) && Objects.equals(getOrder(), payment.getOrder());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(getId());
+        result = 31 * result + Objects.hashCode(getOrder());
+        return result;
     }
 }
