@@ -35,7 +35,8 @@ public class ProductService {
 
     @Transactional()
     public ProductDTO insert(ProductDTO dto){
-        Product product = new Product(dto);
+        Product product = new Product();
+        copyProductDTOtoProduct(dto,product);
         product = repository.save(product);
         return new ProductDTO(product);
     }
@@ -48,7 +49,7 @@ public class ProductService {
            product = repository.save(product);
            return new ProductDTO(product);
        }catch (EntityNotFoundException e){
-           throw new ResourceNotFoundException("Id not found");
+           throw new ResourceNotFoundException(String.format("Product not found. ID: %d", id));
        }
     }
 
@@ -62,7 +63,6 @@ public class ProductService {
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("referential integrity failure");
         }
-        repository.deleteById(id);
     }
 
     private void copyProductDTOtoProduct(ProductDTO dto, Product product) {
