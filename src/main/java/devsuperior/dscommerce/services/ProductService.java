@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.pattern.PathPatternRouteMatcher;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +45,24 @@ public class ProductService {
     @Transactional()
     public ProductDTO insert(ProductDTO dto){
         Product product = new Product(dto);
-        repository.save(product);
+        product = repository.save(product);
         return new ProductDTO(product);
     }
+
+    @Transactional()
+    public ProductDTO update(Long id, ProductDTO dto){
+        Product product = repository.getReferenceById(id);
+        copyProductDTOtoProduct(dto, product);
+        product = repository.save(product);
+        return new ProductDTO(product);
+    }
+
+    private void copyProductDTOtoProduct(ProductDTO dto, Product product) {
+        product.setName(dto.name());
+        product.setDescription(dto.description());
+        product.setPrice(dto.price());
+        product.setImgUrl(dto.imgUrl());
+    }
+
+
 }
