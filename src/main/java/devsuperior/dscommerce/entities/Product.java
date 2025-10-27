@@ -1,5 +1,6 @@
 package devsuperior.dscommerce.entities;
 
+import devsuperior.dscommerce.dto.ProductDTO;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -37,6 +38,13 @@ public class Product {
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
+    }
+
+    public Product(ProductDTO dto) {
+        this.name = dto.name();
+        this.description = dto.description();
+        this.price = dto.price();
+        this.imgUrl = dto.imgUrl();
     }
 
     public Long getId() {
